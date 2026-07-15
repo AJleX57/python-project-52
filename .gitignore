@@ -1,8 +1,23 @@
+# Virtual environment
 .venv/
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Environment variables
 .env
+.env.*
+
+# Local database
 db.sqlite3
-*.egg-info/
-.mypy_cache/
-.ruff_cache/
+
+# Tests and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editors
+.idea/
+.vscode/
