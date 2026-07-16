@@ -1,19 +1,24 @@
+# Environment
+.env
+.env.*
+
+# Разрешаем сохранить пример настроек
+!.env.example
+
 # Virtual environment
 .venv/
 
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-
-# Environment variables
-.env
-.env.*
 
 # Local database
 db.sqlite3
 
-# Tests and coverage
+# Generated static files
+staticfiles/
+
+# Tests
 .pytest_cache/
 .coverage
 htmlcov/
