@@ -1,0 +1,38 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "!",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "first_user",
+      "first_name": "Иван",
+      "last_name": "Иванов",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-10T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "!",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "second_user",
+      "first_name": "Пётр",
+      "last_name": "Петров",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-11T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

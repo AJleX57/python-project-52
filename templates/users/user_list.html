@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Пользователи
+{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">
+    Пользователи
+  </h1>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Имя пользователя</th>
+          <th>Полное имя</th>
+          <th>Дата создания</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for account in users %}
+          <tr>
+            <td>
+              {{ account.id }}
+            </td>
+
+            <td>
+              {{ account.username }}
+            </td>
+
+            <td>
+              {{ account.first_name }}
+              {{ account.last_name }}
+            </td>
+
+            <td>
+              {{ account.date_joined|date:"d.m.Y H:i" }}
+            </td>
+
+            <td>
+              <a
+                href="{% url 'users:update' account.pk %}"
+              >
+                Изменить
+              </a>
+
+              <br>
+
+              <a
+                href="{% url 'users:delete' account.pk %}"
+              >
+                Удалить
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">
+              Пользователи не найдены
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -32,3 +32,9 @@ dev:
 
 check:
 	python manage.py check
+
+.PHONY: test
+
+
+test:
+	python manage.py test
