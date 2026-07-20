@@ -1,6 +1,7 @@
-from django.http import HttpRequest, HttpResponse
+from django.views.generic import TemplateView
 
 
-def index(request: HttpRequest) -> HttpResponse:
-    """Отображает главную страницу приложения."""
-    return HttpResponse("Привет от Хекслета!")
+class IndexView(TemplateView):
+    """Отображает главную страницу менеджера задач."""
+
+    template_name = "index.html"

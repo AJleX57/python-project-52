@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import path
 
-from task_manager.views import index
+from task_manager.views import IndexView
 
 
 urlpatterns = [
-    path("", index, name="index"),
+    path("", IndexView.as_view(), name="index"),
     path("admin/", admin.site.urls),
 ]
