@@ -70,8 +70,9 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     "users.apps.UsersConfig",
     "statuses.apps.StatusesConfig",
+    "labels.apps.LabelsConfig",
+    "tasks.apps.TasksConfig",
 ]
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

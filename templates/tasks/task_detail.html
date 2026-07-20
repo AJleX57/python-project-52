@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Просмотр задачи
+{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">
+    Просмотр задачи
+  </h1>
+
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title">
+        {{ task.name }}
+      </h2>
+
+      <p class="card-text">
+        {{ task.description|linebreaksbr }}
+      </p>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Автор:</strong>
+
+        {% firstof
+          task.author.get_full_name
+          task.author.username
+        %}
+      </li>
+
+      <li class="list-group-item">
+        <strong>Исполнитель:</strong>
+
+        {% if task.executor %}
+          {% firstof
+            task.executor.get_full_name
+            task.executor.username
+          %}
+        {% else %}
+          —
+        {% endif %}
+      </li>
+
+      <li class="list-group-item">
+        <strong>Статус:</strong>
+        {{ task.status }}
+      </li>
+
+      <li class="list-group-item">
+        <strong>Метки:</strong>
+
+        {% for label in task.labels.all %}
+          <span class="badge text-bg-secondary">
+            {{ label.name }}
+          </span>
+        {% empty %}
+          —
+        {% endfor %}
+      </li>
+
+      <li class="list-group-item">
+        <strong>Дата создания:</strong>
+        {{ task.created_at|date:"d.m.Y H:i" }}
+      </li>
+    </ul>
+
+    <div class="card-body">
+      <a
+        class="card-link"
+        href="{% url 'tasks:update' task.pk %}"
+      >
+        Изменить
+      </a>
+
+      <a
+        class="card-link"
+        href="{% url 'tasks:delete' task.pk %}"
+      >
+        Удалить
+      </a>
+    </div>
+  </div>
+{% endblock %}

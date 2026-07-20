@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Задачи
+{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">
+    Задачи
+  </h1>
+
+  <a
+    class="btn btn-primary mb-3"
+    href="{% url 'tasks:create' %}"
+  >
+    Создать задачу
+  </a>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Имя</th>
+          <th>Статус</th>
+          <th>Автор</th>
+          <th>Исполнитель</th>
+          <th>Дата создания</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for task in tasks %}
+          <tr>
+            <td>
+              {{ task.id }}
+            </td>
+
+            <td>
+              {{ task.name }}
+            </td>
+
+            <td>
+              {{ task.status }}
+            </td>
+
+            <td>
+              {% firstof
+                task.author.get_full_name
+                task.author.username
+              %}
+            </td>
+
+            <td>
+              {% if task.executor %}
+                {% firstof
+                  task.executor.get_full_name
+                  task.executor.username
+                %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+
+            <td>
+              {{ task.created_at|date:"d.m.Y H:i" }}
+            </td>
+
+            <td>
+              <a href="{% url 'tasks:detail' task.pk %}">
+                Показать
+              </a>
+
+              <br>
+
+              <a href="{% url 'tasks:update' task.pk %}">
+                Изменить
+              </a>
+
+              <br>
+
+              <a href="{% url 'tasks:delete' task.pk %}">
+                Удалить
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7">
+              Задачи не найдены
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

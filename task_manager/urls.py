@@ -20,6 +20,10 @@ urlpatterns = [
     include("statuses.urls"),
     ),
     path(
+    "tasks/",
+    include("tasks.urls"),
+    ),
+    path(
         "login/",
         UserLoginView.as_view(),
         name="login",

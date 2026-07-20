@@ -1,0 +1,82 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 301,
+    "fields": {
+      "password": "!",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "task_author",
+      "first_name": "Иван",
+      "last_name": "Авторов",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-10T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 302,
+    "fields": {
+      "password": "!",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "task_executor",
+      "first_name": "Пётр",
+      "last_name": "Исполнителей",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-11T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "statuses.status",
+    "pk": 301,
+    "fields": {
+      "name": "В работе",
+      "created_at": "2026-01-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "statuses.status",
+    "pk": 302,
+    "fields": {
+      "name": "Завершён",
+      "created_at": "2026-01-13T10:00:00Z"
+    }
+  },
+  {
+    "model": "labels.label",
+    "pk": 301,
+    "fields": {
+      "name": "Важное",
+      "created_at": "2026-01-14T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 301,
+    "fields": {
+      "name": "Тестовая задача",
+      "description": "Описание тестовой задачи",
+      "status": 301,
+      "author": 301,
+      "executor": 302,
+      "created_at": "2026-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tasklabel",
+    "pk": 301,
+    "fields": {
+      "task": 301,
+      "label": 301
+    }
+  }
+]
