@@ -49,7 +49,18 @@
                 Пользователи
               </a>
             </li>
-          </ul>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{% url 'statuses:index' %}"
+              >
+                Статусы
+              </a>
+            </li>
+          {% endif %}
+        </ul>
 
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
