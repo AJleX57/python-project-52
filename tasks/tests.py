@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from labels.models import Label
 from statuses.models import Status
-from tasks.models import Task
+from tasks.models import Task, TaskLabel
 
 
 User = get_user_model()
@@ -370,4 +370,224 @@ class TaskCRUDTests(TestCase):
         self.assert_flash_message(
             response,
             "Невозможно удалить пользователя, потому что он используется",
+        )
+
+
+class TaskFilterTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = User.objects.create_user(
+            username="filter_author",
+            first_name="Иван",
+            last_name="Авторов",
+            password="StrongPassword123!",
+        )
+
+        cls.other_user = User.objects.create_user(
+            username="filter_other",
+            first_name="Пётр",
+            last_name="Исполнителей",
+            password="StrongPassword123!",
+        )
+
+        cls.new_status = Status.objects.create(
+            name="Новый фильтр",
+        )
+
+        cls.done_status = Status.objects.create(
+            name="Завершённый фильтр",
+        )
+
+        cls.bug_label = Label.objects.create(
+            name="Баг фильтра",
+        )
+
+        cls.feature_label = Label.objects.create(
+            name="Фича фильтра",
+        )
+
+        cls.first_task = Task.objects.create(
+            name="Первая задача фильтра",
+            description="Первая тестовая задача",
+            status=cls.new_status,
+            author=cls.author,
+            executor=cls.other_user,
+        )
+
+        cls.second_task = Task.objects.create(
+            name="Вторая задача фильтра",
+            description="Вторая тестовая задача",
+            status=cls.done_status,
+            author=cls.other_user,
+            executor=cls.author,
+        )
+
+        cls.third_task = Task.objects.create(
+            name="Третья задача фильтра",
+            description="Третья тестовая задача",
+            status=cls.done_status,
+            author=cls.author,
+            executor=cls.author,
+        )
+
+        TaskLabel.objects.create(
+            task=cls.first_task,
+            label=cls.bug_label,
+        )
+
+        TaskLabel.objects.create(
+            task=cls.second_task,
+            label=cls.feature_label,
+        )
+
+        TaskLabel.objects.create(
+            task=cls.third_task,
+            label=cls.bug_label,
+        )
+
+        TaskLabel.objects.create(
+            task=cls.third_task,
+            label=cls.feature_label,
+        )
+
+    def setUp(self):
+        self.client.force_login(self.author)
+
+    def get_filtered_task_ids(self, parameters=None):
+        response = self.client.get(
+            reverse("tasks:index"),
+            parameters or {},
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+        task_ids = {
+            task.pk
+            for task in response.context["tasks"]
+        }
+
+        return response, task_ids
+
+    def test_filter_form_has_expected_fields(self):
+        response, _ = self.get_filtered_task_ids()
+
+        filter_form = response.context["filter"].form
+
+        expected_labels = {
+            "status": "Статус",
+            "executor": "Исполнитель",
+            "labels": "Метка",
+            "self_tasks": "Только свои задачи",
+        }
+
+        for field_name, expected_label in expected_labels.items():
+            with self.subTest(field=field_name):
+                self.assertIn(
+                    field_name,
+                    filter_form.fields,
+                )
+
+                self.assertEqual(
+                    filter_form.fields[field_name].label,
+                    expected_label,
+                )
+
+                self.assertContains(
+                    response,
+                    f'name="{field_name}"',
+                )
+
+                self.assertContains(
+                    response,
+                    f'id="id_{field_name}"',
+                )
+
+    def test_without_filters_all_tasks_are_displayed(self):
+        _, task_ids = self.get_filtered_task_ids()
+
+        self.assertSetEqual(
+            task_ids,
+            {
+                self.first_task.pk,
+                self.second_task.pk,
+                self.third_task.pk,
+            },
+        )
+
+    def test_filter_tasks_by_status(self):
+        _, task_ids = self.get_filtered_task_ids(
+            {
+                "status": self.new_status.pk,
+            }
+        )
+
+        self.assertSetEqual(
+            task_ids,
+            {
+                self.first_task.pk,
+            },
+        )
+
+    def test_filter_tasks_by_executor(self):
+        _, task_ids = self.get_filtered_task_ids(
+            {
+                "executor": self.other_user.pk,
+            }
+        )
+
+        self.assertSetEqual(
+            task_ids,
+            {
+                self.first_task.pk,
+            },
+        )
+
+    def test_filter_tasks_by_label(self):
+        _, task_ids = self.get_filtered_task_ids(
+            {
+                "labels": self.bug_label.pk,
+            }
+        )
+
+        self.assertSetEqual(
+            task_ids,
+            {
+                self.first_task.pk,
+                self.third_task.pk,
+            },
+        )
+
+    def test_filter_only_own_tasks(self):
+        _, task_ids = self.get_filtered_task_ids(
+            {
+                "self_tasks": "on",
+            }
+        )
+
+        self.assertSetEqual(
+            task_ids,
+            {
+                self.first_task.pk,
+                self.third_task.pk,
+            },
+        )
+
+    def test_filters_can_be_combined(self):
+        _, task_ids = self.get_filtered_task_ids(
+            {
+                "status": self.done_status.pk,
+                "executor": self.author.pk,
+                "labels": self.feature_label.pk,
+                "self_tasks": "on",
+            }
+        )
+
+        self.assertSetEqual(
+            task_ids,
+            {
+                self.third_task.pk,
+            },
         )

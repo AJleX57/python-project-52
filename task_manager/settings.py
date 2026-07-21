@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_bootstrap5",
+    "django_filters",
     "users.apps.UsersConfig",
     "statuses.apps.StatusesConfig",
     "labels.apps.LabelsConfig",

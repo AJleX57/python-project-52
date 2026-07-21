@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 
 {% block title %}
   Задачи
@@ -15,6 +16,28 @@
   >
     Создать задачу
   </a>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="get">
+        {% bootstrap_form filter.form %}
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Показать
+        </button>
+
+        <a
+          class="btn btn-outline-secondary"
+          href="{% url 'tasks:index' %}"
+        >
+          Сбросить
+        </a>
+      </form>
+    </div>
+  </div>
 
   <div class="table-responsive">
     <table class="table table-striped">
