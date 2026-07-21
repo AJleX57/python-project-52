@@ -1,12 +1,14 @@
 [run]
 branch = True
 relative_files = True
-source =
-    task_manager
-    users
-    statuses
-    tasks
-    labels
+
+include =
+    task_manager/*
+    users/*
+    statuses/*
+    labels/*
+    tasks/*
+
 omit =
     */migrations/*
     */tests.py
@@ -16,3 +18,9 @@ omit =
 [report]
 show_missing = True
 skip_empty = True
+
+[html]
+directory = htmlcov
+
+[xml]
+output = coverage.xml
