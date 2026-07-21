@@ -61,7 +61,9 @@
             </td>
 
             <td>
-              {{ task.name }}
+              <a href="{% url 'tasks:detail' task.pk %}">
+                {{ task.name }}
+              </a>
             </td>
 
             <td>
