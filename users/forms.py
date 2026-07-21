@@ -6,6 +6,14 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 User = get_user_model()
 
 
+class UserChoiceField(forms.ModelChoiceField):
+    """Поле выбора пользователя с отображением имени и фамилии."""
+
+    def label_from_instance(self, user):
+        full_name = user.get_full_name().strip()
+        return full_name or user.username
+
+
 class UserForm(UserCreationForm):
     """Форма регистрации и изменения пользователя."""
 

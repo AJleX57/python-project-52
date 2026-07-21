@@ -4,12 +4,23 @@ from django.contrib.auth import get_user_model
 from labels.models import Label
 from statuses.models import Status
 from tasks.models import Task
+from users.forms import UserChoiceField
 
 
 User = get_user_model()
 
 
 class TaskForm(forms.ModelForm):
+    executor = UserChoiceField(
+        queryset=User.objects.order_by(
+            "first_name",
+            "last_name",
+            "username",
+        ),
+        required=False,
+        label="Исполнитель",
+    )
+
     class Meta:
         model = Task
         fields = (
@@ -28,7 +39,7 @@ class TaskForm(forms.ModelForm):
         }
         error_messages = {
             "name": {
-                "unique": ("Задача с таким именем уже существует."),
+                "unique": "Задача с таким именем уже существует.",
             },
         }
         widgets = {
@@ -44,5 +55,9 @@ class TaskForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["status"].queryset = Status.objects.order_by("name")
-        self.fields["executor"].queryset = User.objects.order_by("username")
+        self.fields["executor"].queryset = User.objects.order_by(
+            "first_name",
+            "last_name",
+            "username",
+        )
         self.fields["labels"].queryset = Label.objects.order_by("name")
