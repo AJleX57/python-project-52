@@ -26,3 +26,7 @@ htmlcov/
 # Editors
 .idea/
 .vscode/
+
+.coverage
+coverage.xml
+htmlcov/
