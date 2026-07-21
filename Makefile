@@ -38,3 +38,20 @@ check:
 
 test:
 	python manage.py test
+
+test-coverage:
+	coverage erase
+	coverage run manage.py test
+	coverage report
+	coverage xml
+
+lint:
+	uv run ruff check .
+
+
+format-check:
+	uv run ruff format --check .
+
+
+format:
+	uv run ruff format .
