@@ -1,0 +1,72 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 501,
+    "fields": {
+      "password": "!",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "label_user",
+      "first_name": "Иван",
+      "last_name": "Иванов",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-10T10:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "statuses.status",
+    "pk": 501,
+    "fields": {
+      "name": "Тестовый статус",
+      "created_at": "2026-01-11T10:00:00Z"
+    }
+  },
+  {
+    "model": "labels.label",
+    "pk": 501,
+    "fields": {
+      "name": "Связанная метка",
+      "created_at": "2026-01-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "labels.label",
+    "pk": 502,
+    "fields": {
+      "name": "Свободная метка",
+      "created_at": "2026-01-13T10:00:00Z"
+    }
+  },
+  {
+    "model": "labels.label",
+    "pk": 503,
+    "fields": {
+      "name": "Дополнительная метка",
+      "created_at": "2026-01-14T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 501,
+    "fields": {
+      "name": "Задача с меткой",
+      "description": "Описание задачи с меткой",
+      "status": 501,
+      "author": 501,
+      "executor": null,
+      "created_at": "2026-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.tasklabel",
+    "pk": 501,
+    "fields": {
+      "task": 501,
+      "label": 501
+    }
+  }
+]

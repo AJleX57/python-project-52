@@ -35,8 +35,11 @@ class TaskForm(forms.ModelForm):
         }
         widgets = {
             "description": forms.Textarea(
-                attrs={"rows": 5},
+                attrs={
+                    "rows": 5,
+                },
             ),
+            "labels": forms.SelectMultiple(),
         }
 
     def __init__(self, *args, **kwargs):

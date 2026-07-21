@@ -20,6 +20,10 @@ urlpatterns = [
     include("statuses.urls"),
     ),
     path(
+    "labels/",
+    include("labels.urls"),
+    ),
+    path(
     "tasks/",
     include("tasks.urls"),
     ),
