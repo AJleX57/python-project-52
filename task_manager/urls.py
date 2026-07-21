@@ -20,16 +20,16 @@ urlpatterns = [
         include("users.urls"),
     ),
     path(
-    "statuses/",
-    include("statuses.urls"),
+        "statuses/",
+        include("statuses.urls"),
     ),
     path(
-    "labels/",
-    include("labels.urls"),
+        "labels/",
+        include("labels.urls"),
     ),
     path(
-    "tasks/",
-    include("tasks.urls"),
+        "tasks/",
+        include("tasks.urls"),
     ),
     path(
         "login/",

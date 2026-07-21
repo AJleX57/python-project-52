@@ -27,10 +27,7 @@ class StatusCRUDTests(TestCase):
         expected_message,
     ):
         response_messages = [
-            str(message)
-            for message in get_messages(
-                response.wsgi_request
-            )
+            str(message) for message in get_messages(response.wsgi_request)
         ]
 
         self.assertIn(

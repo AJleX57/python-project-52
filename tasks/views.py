@@ -28,8 +28,7 @@ class TaskListView(LoginRequiredMixin, FilterView):
 
     def get_queryset(self):
         return (
-            Task.objects
-            .select_related(
+            Task.objects.select_related(
                 "status",
                 "author",
                 "executor",
@@ -45,15 +44,11 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "task"
 
     def get_queryset(self):
-        return (
-            Task.objects
-            .select_related(
-                "status",
-                "author",
-                "executor",
-            )
-            .prefetch_related("labels")
-        )
+        return Task.objects.select_related(
+            "status",
+            "author",
+            "executor",
+        ).prefetch_related("labels")
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -104,10 +99,7 @@ class TaskAuthorRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         task = self.get_object()
 
-        return (
-            task.author_id
-            == self.request.user.id
-        )
+        return task.author_id == self.request.user.id
 
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:

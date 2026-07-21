@@ -28,9 +28,7 @@ class TaskForm(forms.ModelForm):
         }
         error_messages = {
             "name": {
-                "unique": (
-                    "Задача с таким именем уже существует."
-                ),
+                "unique": ("Задача с таким именем уже существует."),
             },
         }
         widgets = {
@@ -45,12 +43,6 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields["status"].queryset = (
-            Status.objects.order_by("name")
-        )
-        self.fields["executor"].queryset = (
-            User.objects.order_by("username")
-        )
-        self.fields["labels"].queryset = (
-            Label.objects.order_by("name")
-        )
+        self.fields["status"].queryset = Status.objects.order_by("name")
+        self.fields["executor"].queryset = User.objects.order_by("username")
+        self.fields["labels"].queryset = Label.objects.order_by("name")

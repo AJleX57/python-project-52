@@ -32,10 +32,7 @@ class TaskCRUDTests(TestCase):
         expected_message,
     ):
         response_messages = [
-            str(message)
-            for message in get_messages(
-                response.wsgi_request
-            )
+            str(message) for message in get_messages(response.wsgi_request)
         ]
 
         self.assertIn(
@@ -464,10 +461,7 @@ class TaskFilterTests(TestCase):
             200,
         )
 
-        task_ids = {
-            task.pk
-            for task in response.context["tasks"]
-        }
+        task_ids = {task.pk for task in response.context["tasks"]}
 
         return response, task_ids
 

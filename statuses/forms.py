@@ -12,8 +12,6 @@ class StatusForm(forms.ModelForm):
         }
         error_messages = {
             "name": {
-                "unique": (
-                    "Статус с таким именем уже существует."
-                ),
+                "unique": ("Статус с таким именем уже существует."),
             },
         }

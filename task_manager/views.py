@@ -12,6 +12,4 @@ class RollbarTestView(View):
     """Создаёт тестовую ошибку для проверки Rollbar."""
 
     def get(self, request, *args, **kwargs):
-        raise RuntimeError(
-            "Test error from Task Manager"
-        )
+        raise RuntimeError("Test error from Task Manager")

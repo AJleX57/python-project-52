@@ -30,10 +30,7 @@ class LabelCRUDTests(TestCase):
         expected_message,
     ):
         response_messages = [
-            str(message)
-            for message in get_messages(
-                response.wsgi_request
-            )
+            str(message) for message in get_messages(response.wsgi_request)
         ]
 
         self.assertIn(
@@ -300,9 +297,7 @@ class LabelCRUDTests(TestCase):
 
         labels_field = response.context["form"].fields["labels"]
 
-        self.assertTrue(
-            labels_field.widget.allow_multiple_selected
-        )
+        self.assertTrue(labels_field.widget.allow_multiple_selected)
 
         self.assertContains(
             response,

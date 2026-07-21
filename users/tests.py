@@ -18,8 +18,7 @@ class UserCRUDTests(TestCase):
 
     def assert_flash_message(self, response, expected_message):
         response_messages = [
-            str(message)
-            for message in get_messages(response.wsgi_request)
+            str(message) for message in get_messages(response.wsgi_request)
         ]
 
         self.assertIn(
@@ -53,15 +52,11 @@ class UserCRUDTests(TestCase):
             reverse("login"),
         )
 
-        self.assertTrue(
-            User.objects.filter(username="anna").exists()
-        )
+        self.assertTrue(User.objects.filter(username="anna").exists())
 
         created_user = User.objects.get(username="anna")
 
-        self.assertTrue(
-            created_user.check_password(TEST_PASSWORD)
-        )
+        self.assertTrue(created_user.check_password(TEST_PASSWORD))
 
         self.assert_flash_message(
             response,
@@ -122,9 +117,7 @@ class UserCRUDTests(TestCase):
             self.first_user.username,
             "updated_user",
         )
-        self.assertTrue(
-            self.first_user.check_password(TEST_PASSWORD)
-        )
+        self.assertTrue(self.first_user.check_password(TEST_PASSWORD))
 
         self.assert_flash_message(
             response,
@@ -231,8 +224,7 @@ class AuthenticationTests(TestCase):
 
     def assert_flash_message(self, response, expected_message):
         response_messages = [
-            str(message)
-            for message in get_messages(response.wsgi_request)
+            str(message) for message in get_messages(response.wsgi_request)
         ]
 
         self.assertIn(

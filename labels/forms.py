@@ -12,8 +12,6 @@ class LabelForm(forms.ModelForm):
         }
         error_messages = {
             "name": {
-                "unique": (
-                    "Метка с таким именем уже существует."
-                ),
+                "unique": ("Метка с таким именем уже существует."),
             },
         }
