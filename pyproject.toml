@@ -12,5 +12,6 @@ dependencies = [
     "gunicorn>=26.0.0",
     "psycopg2-binary>=2.9.12",
     "python-dotenv>=1.2.2",
+    "rollbar>=1.4.0",
     "whitenoise[brotli]>=6.12.0",
 ]

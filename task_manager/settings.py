@@ -25,6 +25,45 @@ DEBUG = os.getenv("DEBUG", "False").lower() in {
 }
 
 
+ROLLBAR_ACCESS_TOKEN = os.getenv(
+    "ROLLBAR_ACCESS_TOKEN",
+    "",
+)
+
+ROLLBAR_ENVIRONMENT = os.getenv(
+    "ROLLBAR_ENVIRONMENT",
+    "development" if DEBUG else "production",
+)
+
+ROLLBAR_TEST_ENABLED = os.getenv(
+    "ROLLBAR_TEST_ENABLED",
+    "False",
+).lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+
+
+ROLLBAR = {
+    "access_token": ROLLBAR_ACCESS_TOKEN,
+    "environment": ROLLBAR_ENVIRONMENT,
+    "branch": os.getenv(
+        "RENDER_GIT_BRANCH",
+        "main",
+    ),
+    "code_version": os.getenv(
+        "RENDER_GIT_COMMIT",
+    ),
+    "root": str(BASE_DIR),
+    "enabled": bool(ROLLBAR_ACCESS_TOKEN),
+    "capture_ip": "anonymize",
+    "capture_username": True,
+    "include_request_body": False,
+}
+
+
 ALLOWED_HOSTS = [
     "webserver",
     "localhost",
@@ -85,6 +124,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
+if ROLLBAR_ACCESS_TOKEN:
+    MIDDLEWARE.append(
+        "rollbar.contrib.django.middleware."
+        "RollbarNotifierMiddleware"
+    )
 
 
 ROOT_URLCONF = "task_manager.urls"

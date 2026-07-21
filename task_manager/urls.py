@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
 
-from task_manager.views import IndexView
+from task_manager.views import (
+    IndexView,
+    RollbarTestView,
+)
 from users.views import UserLoginView, UserLogoutView
 
 
@@ -42,3 +46,13 @@ urlpatterns = [
         admin.site.urls,
     ),
 ]
+
+
+if settings.ROLLBAR_TEST_ENABLED:
+    urlpatterns.append(
+        path(
+            "__rollbar_test__/",
+            RollbarTestView.as_view(),
+            name="rollbar-test",
+        )
+    )
