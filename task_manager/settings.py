@@ -12,17 +12,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 
+def env_bool(name, default=False):
+    """Преобразует переменную окружения в логическое значение."""
+
+    value = os.getenv(name)
+
+    if value is None:
+        return default
+
+    return value.lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
     "django-insecure-development-key-change-in-production",
 )
 
-DEBUG = os.getenv("DEBUG", "False").lower() in {
-    "1",
-    "true",
-    "yes",
-    "on",
-}
+DEBUG = env_bool(
+    "DEBUG",
+    default=False,
+)
 
 
 ROLLBAR_ACCESS_TOKEN = os.getenv(
@@ -35,15 +49,10 @@ ROLLBAR_ENVIRONMENT = os.getenv(
     "development" if DEBUG else "production",
 )
 
-ROLLBAR_TEST_ENABLED = os.getenv(
+ROLLBAR_TEST_ENABLED = env_bool(
     "ROLLBAR_TEST_ENABLED",
-    "False",
-).lower() in {
-    "1",
-    "true",
-    "yes",
-    "on",
-}
+    default=False,
+)
 
 
 ROLLBAR = {
@@ -114,6 +123,7 @@ INSTALLED_APPS = [
     "tasks.apps.TasksConfig",
 ]
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -124,7 +134,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 if ROLLBAR_ACCESS_TOKEN:
     MIDDLEWARE.append(
@@ -186,7 +195,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": (
+            "django.core.files.storage.FileSystemStorage"
+        ),
     },
     "staticfiles": {
         "BACKEND": (
@@ -207,9 +218,22 @@ SECURE_PROXY_SSL_HEADER = (
     "https",
 )
 
-SECURE_SSL_REDIRECT = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+# В CI и локально эти параметры по умолчанию отключены.
+# На Render они включаются через переменные окружения.
+SECURE_SSL_REDIRECT = env_bool(
+    "SECURE_SSL_REDIRECT",
+    default=False,
+)
+
+SESSION_COOKIE_SECURE = env_bool(
+    "SESSION_COOKIE_SECURE",
+    default=False,
+)
+
+CSRF_COOKIE_SECURE = env_bool(
+    "CSRF_COOKIE_SECURE",
+    default=False,
+)
 
 
 LOGGING = {
@@ -222,8 +246,13 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "handlers": [
+                "console",
+            ],
+            "level": os.getenv(
+                "DJANGO_LOG_LEVEL",
+                "INFO",
+            ),
             "propagate": False,
         },
     },
