@@ -24,20 +24,14 @@
       <li class="list-group-item">
         <strong>Автор:</strong>
 
-        {% firstof
-          task.author.get_full_name
-          task.author.username
-        %}
+        {% firstof task.author.get_full_name task.author.username %}
       </li>
 
       <li class="list-group-item">
         <strong>Исполнитель:</strong>
 
         {% if task.executor %}
-          {% firstof
-            task.executor.get_full_name
-            task.executor.username
-          %}
+          {% firstof task.executor.get_full_name task.executor.username %}
         {% else %}
           —
         {% endif %}
